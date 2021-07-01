@@ -35,7 +35,23 @@ func NewSet(s ...interface{}) Set {
 	return &set
 }
 
+func NewSetWithSlice(s []interface{}) Set {
+	set := newThreadUnsafeSet()
+	for _, item := range s {
+		set.Add(item)
+	}
+	return &set
+}
+
 func NewThreadSafeSet(s ...interface{}) Set {
+	set := newThreadSafeSet()
+	for _, item := range s {
+		set.Add(item)
+	}
+	return &set
+}
+
+func NewThreadSafeSetWithSlice(s []interface{}) Set {
 	set := newThreadSafeSet()
 	for _, item := range s {
 		set.Add(item)
