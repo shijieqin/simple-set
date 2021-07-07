@@ -13,6 +13,8 @@ type Set interface {
 	Len() int
 	// 遍历Set，直到函数返回true
 	Each(func(interface{}) bool)
+	// 交集
+	Intersect(other Set) Set
 	// 迭代
 	Iterator() *Iterator
 	//移除一个元素
