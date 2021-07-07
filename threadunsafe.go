@@ -57,6 +57,25 @@ func (s *threadUnsafeSet) Each(f func(interface{}) bool){
 	}
 }
 
+func (s *threadUnsafeSet) Intersect(other Set) Set {
+	o := other.(*threadUnsafeSet)
+	intersection := newThreadUnsafeSet()
+	if s.Len() < other.Len() {
+		for elem := range *s {
+			if other.Contains(elem) {
+				intersection.Add(elem)
+			}
+		}
+	} else {
+		for elem := range *o {
+			if s.Contains(elem) {
+				intersection.Add(elem)
+			}
+		}
+	}
+	return &intersection
+}
+
 func (s *threadUnsafeSet) Iterator() *Iterator {
 	iterator, itemCh, stopCh := newIterator()
 

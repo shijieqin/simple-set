@@ -68,6 +68,19 @@ func (s *threadSafeSet) Each(f func(interface{}) bool) {
 	}
 }
 
+func (s *threadSafeSet) Intersect(other Set) Set {
+	o := other.(*threadSafeSet)
+
+	s.RLock()
+	o.RLock()
+	unsafeIntersection := s.s.Intersect(&o.s).(*threadUnsafeSet)
+
+	ret := &threadSafeSet{s: *unsafeIntersection}
+	s.RUnlock()
+	o.RUnlock()
+	return ret
+}
+
 func (s *threadSafeSet) Iterator() *Iterator {
 	iterator, itemCh, stopCh := newIterator()
 	go func() {
